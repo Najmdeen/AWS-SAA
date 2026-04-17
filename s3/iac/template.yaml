@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A simple S3 bucket created via CloudFormation
+
+Resources:
+  # This is the logical name of our resource
+  MyLearningBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      # Optional: Give it a specific name (must be globally unique)
+      BucketName: !Sub "iac-learning-bucket-${AWS::AccountId}"
+
+      # Basic security: Block all public access
+      # PublicAccessBlockConfiguration:
+      #   BlockPublicAcls: true
+      #   BlockPublicPolicy: true
+      #   IgnorePublicAcls: true
+      #   RestrictPublicBuckets: true
+
+Outputs:
+  BucketName:
+    Value: !Ref MyLearningBucket
+    Description: The name of the created bucket

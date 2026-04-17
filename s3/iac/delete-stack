@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+STACK_NAME="my-s3-iac-stack"
+
+echo "Deleting CloudFormation stack: $STACK_NAME..."
+
+# Run the delete command
+aws cloudformation delete-stack --stack-name "$STACK_NAME"
+
+# Wait for the deletion to finish (otherwise the command returns instantly)
+echo "Waiting for stack deletion to complete..."
+aws cloudformation wait stack-delete-complete --stack-name "$STACK_NAME"
+
+if [ $? -eq 0 ]; then
+    echo "Stack deleted successfully!"
+else
+    echo "Error: Stack deletion failed. (Check the AWS Console for details)."
+fi

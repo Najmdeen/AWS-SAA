@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# Define variables
+STACK_NAME="my-s3-iac-stack"
+TEMPLATE_FILE="s3/iac/template.yaml"
+
+echo "Deploying CloudFormation stack: $STACK_NAME..."
+
+# The 'deploy' command is better than 'create-stack' because it creates OR updates!
+aws cloudformation deploy \
+  --stack-name "$STACK_NAME" \
+  --template-file "$TEMPLATE_FILE" \
+  --capabilities CAPABILITY_NAMED_IAM
+
+# Check the result
+if [ $? -eq 0 ]; then
+    echo "Deployment successful!"
+else
+    echo "Deployment failed."
+fi
