@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+echo "Listing all S3 buckets in your account..."
+
+# Run the list command
+# Using a query to show Name and Creation Date in a table format
+aws s3api list-buckets \
+    --query "Buckets[].{Name: Name, Created: CreationDate}" \
+    --output table
+
+# Check result
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to list buckets."
+fi

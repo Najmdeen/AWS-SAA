@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# Check if both arguments were provided
+if [ -z "$1" ] || [ -z "$2" ]; then
+    echo "Error: Missing arguments."
+    echo "Usage: ./delete-object <bucket-name> <object-key>"
+    exit 1
+fi
+
+BUCKET_NAME=$1
+OBJECT_KEY=$2
+
+echo "Attempting to delete object '$OBJECT_KEY' from bucket '$BUCKET_NAME'..."
+
+# Run the delete command
+aws s3api delete-object \
+    --bucket "$BUCKET_NAME" \
+    --key "$OBJECT_KEY"
+
+# Check result
+if [ $? -eq 0 ]; then
+    echo "Success: Object '$OBJECT_KEY' deleted."
+else
+    echo "Error: Failed to delete object."
+fi

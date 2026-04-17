@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# Check if both arguments were provided
+if [ -z "$1" ] || [ -z "$2" ]; then
+    echo "Error: Missing arguments."
+    echo "Usage: ./sync <local-folder-path> <bucket-name>"
+    exit 1
+fi
+
+LOCAL_PATH=$1
+BUCKET_NAME=$2
+
+echo "Syncing local folder '$LOCAL_PATH' with s3://$BUCKET_NAME..."
+
+# Run the sync command
+# This automatically handles subdirectories and only uploads new/changed files
+aws s3 sync "$LOCAL_PATH" "s3://$BUCKET_NAME"
+
+# Check result
+if [ $? -eq 0 ]; then
+    echo "Success: Sync completed."
+else
+    echo "Error: Sync failed."
+fi

@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# Check if the bucket name was provided as an argument
+if [ -z "$1" ]; then
+    echo "Error: No bucket name provided."
+    echo "Usage: ./create-bucket <unique-bucket-name>"
+    exit 1
+fi
+
+# Assign the first argument to a variable
+BUCKET_NAME=$1
+
+echo "Attempting to create bucket: $BUCKET_NAME..."
+
+# Run the AWS CLI command
+# Note: For us-east-1, you don't need a LocationConstraint
+aws s3api create-bucket \
+    --bucket "$BUCKET_NAME" \
+    --region us-east-1
+
+# Check if the command was successful
+if [ $? -eq 0 ]; then
+    echo "Success: Bucket '$BUCKET_NAME' created."
+else
+    echo "Error: Failed to create bucket."
+fi

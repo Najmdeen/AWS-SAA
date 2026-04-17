@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+# Check if both arguments were provided
+if [ -z "$1" ] || [ -z "$2" ]; then
+    echo "Error: Missing arguments."
+    echo "Usage: ./put-object <bucket-name> <file-path>"
+    exit 1
+fi
+
+BUCKET_NAME=$1
+FILE_PATH=$2
+FOLDER=$3 # Optional folder name
+
+# Get the filename
+FILE_NAME=$(basename "$FILE_PATH")
+
+# If a folder was provided, add it to the key
+if [ -n "$FOLDER" ]; then
+    KEY="$FOLDER/$FILE_NAME"
+else
+    KEY="$FILE_NAME"
+fi
+
+echo "Uploading $FILE_PATH to $BUCKET_NAME as $KEY..."
+
+# Run the upload command
+aws s3api put-object \
+    --bucket "$BUCKET_NAME" \
+    --key "$KEY" \
+    --body "$FILE_PATH"
+
+# Check result
+if [ $? -eq 0 ]; then
+    echo "Success: File '$FILE_NAME' uploaded."
+else
+    echo "Error: Failed to upload file."
+fi
